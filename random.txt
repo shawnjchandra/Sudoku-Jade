@@ -1,0 +1,60 @@
+import java.util.*;
+
+public class RandomGenerator {
+    private static Random random = new Random();
+
+    public static String generateActivationCode(int length) {
+        String code = new String("");
+        for (int i = 0; i < length; i++) {
+            code += (char) (random.nextInt(10) + '0');
+        }
+        return code;
+    }
+}
+
+import java.util.*;
+
+public class RandomGenerator {
+    private static Random random = new Random();
+
+    public static String generateActivationCode(int length) {
+        String code = new String("");
+        for (int i = 0; i < length; i++) {
+            code += (char) (random.nextInt(10) + '0');
+        }
+        return code;
+    }
+}
+Kemudian kita buat kelas drivernya untuk memanggil kelas di atas
+view plaincopy to clipboardprint?
+public class TestRandom {
+    public static void main(String[] args) {
+        RandomGenerator random = new RandomGenerator();
+        for (int i = 0; i < 10; i++) {
+            System.out.println("" + random.generateActivationCode(6) + "");
+        }
+    }
+}
+
+
+
+import java.lang.*;
+import java.io.*;
+/**
+ *
+ * @author Apple's 1
+ */
+public class Model1 {
+  public static void main(String[] args) {
+    Sudoku S = new Sudoku();
+
+    S.PrintBoard();
+
+    S.Board[8][0].Value = 1;
+    S.Board[6][2].Value = 1;
+
+    System.out.println(S.validRow());
+    System.out.println(S.validCol());
+    System.out.println(S.validBlock());
+  }    
+}

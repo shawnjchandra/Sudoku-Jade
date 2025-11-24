@@ -1,0 +1,536 @@
+run:
+8 1 9     5       
+    2       7 5   
+  3 7 1   4   6   
+4     5 9   1     
+7     3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+Starting 1
+Starting 2
+Starting 3
+Starting 4
+Starting 5
+Starting 6
+Starting 7
+Starting 8
+Starting 9
+Running 1
+run robot ke-1
+agen 1 dapat posisi valid [1,8]
+8 1 9     5       
+    2       7 5 1 
+  3 7 1   4   6   
+4     5 9   1     
+7     3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+Running 2
+Running 3
+Running 4
+Running 5
+Running 6
+Running 7
+Running 8
+Running 9
+run robot ke-2
+agen 2 dapat posisi valid [0,7]
+8 1 9     5   2   
+    2       7 5 1 
+  3 7 1   4   6   
+4     5 9   1     
+7     3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-3
+agen 3 dapat posisi valid [3,8]
+8 1 9     5   2   
+    2       7 5 1 
+  3 7 1   4   6   
+4     5 9   1   3 
+7     3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-4
+agen 4 dapat posisi valid [0,8]
+8 1 9     5   2 4 
+    2       7 5 1 
+  3 7 1   4   6   
+4     5 9   1   3 
+7     3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-5
+agen 5 dapat posisi valid [2,0]
+8 1 9     5   2 4 
+    2       7 5 1 
+5 3 7 1   4   6   
+4     5 9   1   3 
+7     3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-6
+agen 6 dapat posisi valid [1,0]
+8 1 9     5   2 4 
+6   2       7 5 1 
+5 3 7 1   4   6   
+4     5 9   1   3 
+7     3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-7
+agen 7 dapat posisi valid [0,4]
+8 1 9   7 5   2 4 
+6   2       7 5 1 
+5 3 7 1   4   6   
+4     5 9   1   3 
+7     3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-8
+agen 8 dapat posisi valid [2,6]
+8 1 9   7 5   2 4 
+6   2       7 5 1 
+5 3 7 1   4 8 6   
+4     5 9   1   3 
+7     3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-9
+agen 9 dapat posisi valid [1,3]
+8 1 9   7 5   2 4 
+6   2 9     7 5 1 
+5 3 7 1   4 8 6   
+4     5 9   1   3 
+7     3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-1
+run robot ke-2
+agen 2 dapat posisi valid [2,4]
+8 1 9   7 5   2 4 
+6   2 9     7 5 1 
+5 3 7 1 2 4 8 6   
+4     5 9   1   3 
+7     3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-3
+agen 3 dapat posisi valid [0,6]
+8 1 9   7 5 3 2 4 
+6   2 9     7 5 1 
+5 3 7 1 2 4 8 6   
+4     5 9   1   3 
+7     3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-4
+agen 4 dapat posisi valid [1,1]
+8 1 9   7 5 3 2 4 
+6 4 2 9     7 5 1 
+5 3 7 1 2 4 8 6   
+4     5 9   1   3 
+7     3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-5
+agen 5 dapat posisi valid [4,2]
+8 1 9   7 5 3 2 4 
+6 4 2 9     7 5 1 
+5 3 7 1 2 4 8 6   
+4     5 9   1   3 
+7   5 3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-6
+agen 6 dapat posisi valid [0,3]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9     7 5 1 
+5 3 7 1 2 4 8 6   
+4     5 9   1   3 
+7   5 3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-7
+agen 7 dapat posisi valid [3,5]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9     7 5 1 
+5 3 7 1 2 4 8 6   
+4     5 9 7 1   3 
+7   5 3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-8
+agen 8 dapat posisi valid [1,4]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8   7 5 1 
+5 3 7 1 2 4 8 6   
+4     5 9 7 1   3 
+7   5 3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-9
+agen 9 dapat posisi valid [2,8]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8   7 5 1 
+5 3 7 1 2 4 8 6 9 
+4     5 9 7 1   3 
+7   5 3   8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-1
+agen 1 dapat posisi valid [4,4]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8   7 5 1 
+5 3 7 1 2 4 8 6 9 
+4     5 9 7 1   3 
+7   5 3 1 8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-2
+agen 2 dapat posisi valid [3,1]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8   7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2   5 9 7 1   3 
+7   5 3 1 8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-3
+agen 3 dapat posisi valid [1,5]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2   5 9 7 1   3 
+7   5 3 1 8     2 
+    3   6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-4
+agen 4 dapat posisi valid [5,3]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2   5 9 7 1   3 
+7   5 3 1 8     2 
+    3 4 6 2     7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-5
+agen 5 dapat posisi valid [5,6]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2   5 9 7 1   3 
+7   5 3 1 8     2 
+    3 4 6 2 5   7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-6
+agen 6 dapat posisi valid [3,2]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1   3 
+7   5 3 1 8     2 
+    3 4 6 2 5   7 
+  5   7   9 2 1   
+  6 4       9     
+      2     4 3 8 
+run robot ke-7
+agen 7 dapat posisi valid [7,7]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1   3 
+7   5 3 1 8     2 
+    3 4 6 2 5   7 
+  5   7   9 2 1   
+  6 4       9 7   
+      2     4 3 8 
+run robot ke-8
+agen 8 dapat posisi valid [5,1]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1   3 
+7   5 3 1 8     2 
+  8 3 4 6 2 5   7 
+  5   7   9 2 1   
+  6 4       9 7   
+      2     4 3 8 
+run robot ke-9
+run robot ke-1
+agen 1 dapat posisi valid [5,0]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1   3 
+7   5 3 1 8     2 
+1 8 3 4 6 2 5   7 
+  5   7   9 2 1   
+  6 4       9 7   
+      2     4 3 8 
+run robot ke-2
+agen 2 dapat posisi valid [7,0]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1   3 
+7   5 3 1 8     2 
+1 8 3 4 6 2 5   7 
+  5   7   9 2 1   
+2 6 4       9 7   
+      2     4 3 8 
+run robot ke-3
+agen 3 dapat posisi valid [6,0]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1   3 
+7   5 3 1 8     2 
+1 8 3 4 6 2 5   7 
+3 5   7   9 2 1   
+2 6 4       9 7   
+      2     4 3 8 
+run robot ke-4
+agen 4 dapat posisi valid [4,7]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1   3 
+7   5 3 1 8   4 2 
+1 8 3 4 6 2 5   7 
+3 5   7   9 2 1   
+2 6 4       9 7   
+      2     4 3 8 
+run robot ke-5
+agen 5 dapat posisi valid [7,8]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1   3 
+7   5 3 1 8   4 2 
+1 8 3 4 6 2 5   7 
+3 5   7   9 2 1   
+2 6 4       9 7 5 
+      2     4 3 8 
+run robot ke-6
+agen 6 dapat posisi valid [4,6]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1   3 
+7   5 3 1 8 6 4 2 
+1 8 3 4 6 2 5   7 
+3 5   7   9 2 1   
+2 6 4       9 7 5 
+      2     4 3 8 
+run robot ke-7
+agen 7 dapat posisi valid [8,1]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1   3 
+7   5 3 1 8 6 4 2 
+1 8 3 4 6 2 5   7 
+3 5   7   9 2 1   
+2 6 4       9 7 5 
+  7   2     4 3 8 
+run robot ke-8
+agen 8 dapat posisi valid [3,7]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1 8 3 
+7   5 3 1 8 6 4 2 
+1 8 3 4 6 2 5   7 
+3 5   7   9 2 1   
+2 6 4       9 7 5 
+  7   2     4 3 8 
+run robot ke-9
+agen 9 dapat posisi valid [4,1]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1 8 3 
+7 9 5 3 1 8 6 4 2 
+1 8 3 4 6 2 5   7 
+3 5   7   9 2 1   
+2 6 4       9 7 5 
+  7   2     4 3 8 
+run robot ke-1
+agen 1 dapat posisi valid [8,2]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1 8 3 
+7 9 5 3 1 8 6 4 2 
+1 8 3 4 6 2 5   7 
+3 5   7   9 2 1   
+2 6 4       9 7 5 
+  7 1 2     4 3 8 
+run robot ke-3
+agen 3 dapat posisi valid [7,4]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1 8 3 
+7 9 5 3 1 8 6 4 2 
+1 8 3 4 6 2 5   7 
+3 5   7   9 2 1   
+2 6 4   3   9 7 5 
+  7 1 2     4 3 8 
+run robot ke-4
+agen 4 dapat posisi valid [6,4]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1 8 3 
+7 9 5 3 1 8 6 4 2 
+1 8 3 4 6 2 5   7 
+3 5   7 4 9 2 1   
+2 6 4   3   9 7 5 
+  7 1 2     4 3 8 
+run robot ke-5
+agen 5 dapat posisi valid [8,4]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1 8 3 
+7 9 5 3 1 8 6 4 2 
+1 8 3 4 6 2 5   7 
+3 5   7 4 9 2 1   
+2 6 4   3   9 7 5 
+  7 1 2 5   4 3 8 
+run robot ke-6
+agen 6 dapat posisi valid [6,8]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1 8 3 
+7 9 5 3 1 8 6 4 2 
+1 8 3 4 6 2 5   7 
+3 5   7 4 9 2 1 6 
+2 6 4   3   9 7 5 
+  7 1 2 5   4 3 8 
+run robot ke-8
+agen 8 dapat posisi valid [6,2]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1 8 3 
+7 9 5 3 1 8 6 4 2 
+1 8 3 4 6 2 5   7 
+3 5 8 7 4 9 2 1 6 
+2 6 4   3   9 7 5 
+  7 1 2 5   4 3 8 
+run robot ke-9
+agen 9 dapat posisi valid [5,7]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1 8 3 
+7 9 5 3 1 8 6 4 2 
+1 8 3 4 6 2 5 9 7 
+3 5 8 7 4 9 2 1 6 
+2 6 4   3   9 7 5 
+  7 1 2 5   4 3 8 
+run robot ke-1
+agen 1 dapat posisi valid [7,5]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1 8 3 
+7 9 5 3 1 8 6 4 2 
+1 8 3 4 6 2 5 9 7 
+3 5 8 7 4 9 2 1 6 
+2 6 4   3 1 9 7 5 
+  7 1 2 5   4 3 8 
+run robot ke-6
+agen 6 dapat posisi valid [8,5]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1 8 3 
+7 9 5 3 1 8 6 4 2 
+1 8 3 4 6 2 5 9 7 
+3 5 8 7 4 9 2 1 6 
+2 6 4   3 1 9 7 5 
+  7 1 2 5 6 4 3 8 
+run robot ke-8
+agen 8 dapat posisi valid [7,3]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1 8 3 
+7 9 5 3 1 8 6 4 2 
+1 8 3 4 6 2 5 9 7 
+3 5 8 7 4 9 2 1 6 
+2 6 4 8 3 1 9 7 5 
+  7 1 2 5 6 4 3 8 
+run robot ke-9
+agen 9 dapat posisi valid [8,0]
+8 1 9 6 7 5 3 2 4 
+6 4 2 9 8 3 7 5 1 
+5 3 7 1 2 4 8 6 9 
+4 2 6 5 9 7 1 8 3 
+7 9 5 3 1 8 6 4 2 
+1 8 3 4 6 2 5 9 7 
+3 5 8 7 4 9 2 1 6 
+2 6 4 8 3 1 9 7 5 
+9 7 1 2 5 6 4 3 8 
+Thread 1 interrupted.
+Thread 2 interrupted.
+Thread 3 interrupted.
+Thread 4 interrupted.
+Thread 5 interrupted.
+Thread 6 interrupted.
+Thread 7 interrupted.
+Thread 8 interrupted.
+Thread 9 interrupted.
+ada solusi
+BUILD SUCCESSFUL (total time: 24 seconds)

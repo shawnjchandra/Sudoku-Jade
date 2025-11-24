@@ -1,0 +1,222 @@
+Konsep dengan thread
+Setiap agent/robot akan diimplementasikan sebagai thread
+Scheduller ternyata juga harus jadi thread
+karena ada aksi dimana dia harus menunggu perubahan lingkungan
+kalau dia proses biasanya, apa yang terjadi dengan perintah
+
+do{...} while ... apakah ini dianggap atomik atau ????
+
+
+Yang jadi masalah:
+1. bagaimana mengatur kerja agent tersebut
+   dari model yang ada, setiap robot akan bekerja secara bergiliran
+   untuk itu didefinisikan sebuah scheduller yang akan mengatur kerja agent
+   scheduller ini akan dikembangkan lebih lanjut agar mampu menangani sistem 
+   penggiliran yang berbeda
+   tapi nature dari thread adalah dia hidup terus sampai dimatikan
+   bagaimana mengatur perpindahan state thread tersebut
+   apakah tugas dari controller atau dari scheduller
+   
+   bentuk umum dari parspec == init /\ [][...] /\ ... ada di controller???
+   controller yang akan menentukan apakah sistem berhenti atau belum
+   
+   apa bisa dianggap begini, controller tinggal menunggu hasil kerja dari semua agent
+   sementara
+
+   atau controller dan scheduller itu sebenarnya barang yang sama?
+
+   akan dicoba: dalam setiap iterasi controller akan menunggu hasil kerja agen melalui scheduler
+
+
+2. komunikasi antar agen
+   komunikasi melalui controller atau langsung antar agent
+
+   yang diimplementasikan sekarang komunikasi
+   seharusnya agent yang memberitahu scheduller kalau dia sudah selesai, 
+   yang mengubah nilai turn sebaiknya adalah scheduller, bukan agen. Agen hanya lapor kalau sudah selesai
+
+
+
+run robot ke-1
+1 4       7 6     
+8   6   4     3   
+  2 7           8 
+      4 8       3 
+  9   7   6   4   
+2       1 3       
+4           8 1   
+  5     3   2   4 
+    1 5       6   
+Running 2
+run robot ke-2
+run robot ke-1
+1 4 3     7 6     
+8   6   4     3   
+  2 7           8 
+      4 8       3 
+  9   7   6   4   
+2       1 3       
+4           8 1   
+  5     3   2   4 
+    1 5       6   
+run robot ke-2
+run robot ke-1
+1 4 3 2   7 6     
+8   6   4     3   
+  2 7           8 
+      4 8       3 
+  9   7   6   4   
+2       1 3       
+4           8 1   
+  5     3   2   4 
+    1 5       6   
+run robot ke-2
+run robot ke-1
+1 4 3 2 5 7 6     
+8   6   4     3   
+  2 7           8 
+      4 8       3 
+  9   7   6   4   
+2       1 3       
+4           8 1   
+  5     3   2   4 
+    1 5       6   
+run robot ke-2
+run robot ke-1
+1 4 3 2 5 7 6 9   
+8   6   4     3   
+  2 7           8 
+      4 8       3 
+  9   7   6   4   
+2       1 3       
+4           8 1   
+  5     3   2   4 
+    1 5       6   
+run robot ke-2
+run robot ke-1
+run robot ke-2
+1 4 3 2 5 7 6     
+8   6   4     3   
+  2 7           8 
+      4 8       3 
+  9   7   6   4   
+2       1 3       
+4           8 1   
+  5     3   2   4 
+    1 5       6   
+run robot ke-1
+run robot ke-2
+1 4 3 2   7 6     
+8   6   4     3   
+  2 7           8 
+      4 8       3 
+  9   7   6   4   
+2       1 3       
+4           8 1   
+  5     3   2   4 
+    1 5       6   
+----------------------------------------------
+model 3
+
+  4       7 6     
+8   6   4     3   
+  2 7           8 
+      4 8       3 
+  9   7   6   4   
+2       1 3       
+4           8 1   
+  5     3   2   4 
+    1 5       6   
+Starting 1
+Starting 2
+Starting 3
+Starting 4
+Starting 5
+Starting 6
+Starting 7
+Starting 8
+Starting 9
+Running 1
+run robot ke-1
+Running 2
+Running 3
+Running 4
+Running 5
+Running 6
+Running 7
+Running 8
+Running 9
+run robot ke-2
+run robot ke-3
+run robot ke-4
+  4       7 6     
+8   6   4     3   
+  2 7       4   8 
+      4 8       3 
+  9   7   6   4   
+2       1 3       
+4           8 1   
+  5     3   2   4 
+    1 5       6   
+run robot ke-5
+run robot ke-6
+run robot ke-7
+run robot ke-8
+run robot ke-9
+
+run robot ke-1
+run robot ke-2
+run robot ke-3
+run robot ke-4
+  4       7 6     
+8   6   4     3   
+  2 7       4   8 
+      4 8       3 
+  9   7   6   4   
+2   4   1 3       
+4           8 1   
+  5     3   2   4 
+    1 5       6   
+run robot ke-5
+run robot ke-6
+run robot ke-7
+run robot ke-8
+run robot ke-9
+run robot ke-1
+run robot ke-2
+run robot ke-3
+run robot ke-4
+  4       7 6     
+8   6   4     3   
+  2 7       4   8 
+      4 8       3 
+  9   7   6   4   
+2   4   1 3       
+4           8 1   
+  5     3   2   4 
+    1 5   4   6   
+run robot ke-5
+run robot ke-6
+run robot ke-7
+run robot ke-8
+run robot ke-9
+run robot ke-1
+run robot ke-2
+run robot ke-3
+run robot ke-4
+run robot ke-5
+run robot ke-6
+run robot ke-7
+run robot ke-8
+run robot ke-9
+Thread 1 interrupted.
+Thread 2 interrupted.
+Thread 3 interrupted.
+Thread 4 interrupted.
+Thread 5 interrupted.
+Thread 6 interrupted.
+Thread 7 interrupted.
+Thread 8 interrupted.
+Thread 9 interrupted.
+tidak ada solusi
+BUILD SUCCESSFUL (total time: 31 seconds)
