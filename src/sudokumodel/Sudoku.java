@@ -14,7 +14,7 @@ package sudokumodel;
 import javax.swing.SwingWorker;
 import java.util.List;
 
-class Sudoku extends SwingWorker<Void, State> {
+class Sudoku extends SwingWorker<Void, sudokumodel.State> {
 //    public static final int SIZE = 9;     
     int model;    // model ke-
     int agentNum; // jumlah agen/robot
@@ -26,7 +26,7 @@ class Sudoku extends SwingWorker<Void, State> {
     PuzzleFrame PF;
     String fileName;    
     
-    void toPublish(State s){
+    void toPublish(sudokumodel.State s){
         System.out.println("publish "+s.toString());
         publish(s);
     }
@@ -74,8 +74,8 @@ class Sudoku extends SwingWorker<Void, State> {
     }
     
     //@Override
-    protected void process(List<State> chunks){
-        for (State s : chunks) {
+    protected void process(List<sudokumodel.State> chunks){
+        for (sudokumodel.State s : chunks) {
              this.PF.updateState(s);
          }
     }
