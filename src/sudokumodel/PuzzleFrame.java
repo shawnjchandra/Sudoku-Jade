@@ -1,25 +1,36 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package sudokumodel;
+import sudokumodel.Models.*;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
-/**
- *
- * @author Heni
- */
+
+import jade.core.Profile;
+import jade.core.ProfileImpl;
+import jade.core.Runtime;
+import jade.wrapper.AgentContainer;
+import jade.wrapper.AgentController;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import sudokumodel.SudokuEnvironment.SudokuEnvironment;
+
 public class PuzzleFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form PuzzleFrame
      */
+
+    private SudokuEnvironment env = SudokuEnvironment.getInstance();
+    
     public PuzzleFrame() {
         initComponents();
+        
+        sudokumodel.SudokuEnvironment.SudokuEnvironment.getInstance().setGui(this);
         PP = new JButton [9][9];
         PP[0][0] = P11; PP[0][1] = P12; PP[0][2] = P13; PP[0][3] = P14; PP[0][4] = P15;
         PP[0][5] = P16; PP[0][6] = P17; PP[0][7] = P18; PP[0][8] = P19; 
@@ -41,17 +52,22 @@ public class PuzzleFrame extends javax.swing.JFrame {
         PP[8][5] = P96; PP[8][6] = P97; PP[8][7] = P98; PP[8][8] = P99; 
         PuzzlePanel.setVisible(false);
         Model1Menu.setSelected(true);
-        this.model = 1;
+//        this.model = 1;
         
         AS = new JRadioButton[9];
         AS[0] = Agent1State; AS[1] = Agent2State; AS[2] = Agent3State;
         AS[3] = Agent4State; AS[4] = Agent5State; AS[5] = Agent6State;
         AS[6] = Agent7State; AS[7] = Agent8State; AS[8] = Agent9State;
+        
 
+        
         AB = new JTextField[9];
         AB[0] = Agent1Box; AB[1] = Agent2Box; AB[2] = Agent3Box; 
         AB[3] = Agent4Box; AB[4] = Agent5Box; AB[5] = Agent6Box; 
         AB[6] = Agent7Box; AB[7] = Agent8Box; AB[8] = Agent9Box; 
+        
+        
+
         
         CB = new JComboBox[81];
         AgentStatePanel.setVisible(false);
@@ -64,90 +80,116 @@ public class PuzzleFrame extends javax.swing.JFrame {
         CB[54] = C71; CB[55] = C72; CB[56] = C73; CB[57] = C74; CB[58] = C75; CB[59] = C76; CB[60] = C77; CB[61] = C78; CB[62] = C79;     
         CB[63] = C81; CB[64] = C82; CB[65] = C83; CB[66] = C84; CB[67] = C85; CB[68] = C86; CB[69] = C87; CB[70] = C88; CB[71] = C89;     
         CB[72] = C91; CB[73] = C92; CB[74] = C93; CB[75] = C94; CB[76] = C95; CB[77] = C96; CB[78] = C97; CB[79] = C98; CB[80] = C99;     
+        for (int i = 0 ; i < 9 ; i++) {
+            AB[i].setText("9");
+            AB[i].repaint();
+            AB[i].revalidate();
+            
+        }
     }
 
-/*    void updateBoardandStates(int x, int y, Box b){
-        drawCell(x, y, b);
-    //    showAgentStates(b.getAgentType());
-    }
-*/
-    void drawBoard (Cell[][] box) {
-        for (int i=0;i<9;i++){
-            for (int j=0;j<9;j++){
-                drawCell(i,j, box[i][j].getBox(), box[i][j].isFixed());
+    private boolean loadPuzzleFromFile(String fileName) {
+    try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+        String line;
+        int[][] newBoard = new int[9][9];
+        
+        int count = 0;
+        while ((line = br.readLine()) != null && count < 81) {
+            line = line.trim();
+            if (line.isEmpty()) continue; 
+            
+            try {
+                int val = Integer.parseInt(line);
+                int row = count / 9;  
+                int col = count % 9;  
+                newBoard[row][col] = val;
+     
+                count++;
+            } catch (NumberFormatException e) {
+                continue;
             }
         }
-        PuzzlePanel.revalidate();
-        PuzzlePanel.repaint();
-    }
-    
-    void drawCell (int x, int y, Box b, boolean fixed){
-        if (b == null) PP[x][y].setText(" ");
-        else {
-            PP[x][y].setText(String.valueOf(b.getValue()));
-            if (fixed) PP[x][y].setForeground(Color.red);
-        }
-        PP[x][y].validate();
-        PP[x][y].repaint();
-    }
-    
-    void drawCell (int x, int y, Box b){
-        if (b == null) PP[x][y].setText(" ");
-        else 
-            PP[x][y].setText(String.valueOf(b.getValue()));
-        PP[x][y].validate();
-        PP[x][y].repaint();
-    }
-    
-    void updateState(State s){
-        for(int i=0;i<9;i++){
-            for (int j=0;j<9;j++) {
-                Box b = s.getBoard()[i][j].getBox();
-                if (b != null) PP[i][j].setText(String.valueOf(s.getBoard()[i][j].getBox().getValue()));
-                else PP[i][j].setText("");
-                PP[i][j].revalidate();
-                PP[i][j].repaint();
+        
+        // Clear environment dan load board baru
+        env.clearBoard();
+        
+        for(int i = 0; i < 9; i++) {
+            AB[i].setText("9");
+            for(int j = 0; j < 9; j++) {
+                if(newBoard[i][j] != 0) {
+                    env.placeNumber(i, j, newBoard[i][j], true);
+                    
+                }
             }
         }
-        this.PuzzlePanel.revalidate(); this.PuzzlePanel. repaint();
         
-        for (int i=0;i<9;i++){
-            AB[i].setText(String.valueOf(s.getNumbers()[i]));
-            AB[i].revalidate(); AB[i].repaint();
+        System.out.println("Puzzle loaded successfully!");
+        env.printBoard();
+        return true;
+        
+    } catch (IOException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+    public void updateByAgent(int row, int col, int value, boolean isPlacing) {
+        Box boxObject = null;
+        if (value != 0) {
+            boxObject = new Box(value, 1); 
         }
         
-        for (int i=0;i<9;i++){
-            AS[i].setSelected(false);
-            AS[i].revalidate(); AS[i].repaint();            
+        // Update Tampilan Tombol
+        if (boxObject == null) {
+            PP[row][col].setText("");
+            PP[row][col].setForeground(Color.BLACK);
+        } else {
+            PP[row][col].setText(String.valueOf(value));
+
+            PP[row][col].setForeground(Color.BLACK); 
+            
         }
-        AS[s.getAgentType()-1].setSelected(true);
-        AS[s.getAgentType()-1].revalidate(); AS[s.getAgentType()-1].repaint();   
-        
-        this.AgentStatePanel.revalidate(); this.AgentStatePanel.repaint();
-    } 
-    
-    void showAgentState(int i){
-        AS[i].setSelected(true); 
-        AS[i].revalidate(); AS[i].repaint();
-        AB[i].setText(String.valueOf(S.getEnvironment().numbers[i]));
-        AB[i].revalidate(); AB[i].repaint();       
+        updateBoxStack(value, isPlacing);
+        PP[row][col].repaint();
     }
     
-    void setAgentState(int i){
-        AS[i].setSelected(true);
-        AS[i].revalidate(); AS[i].repaint();
-    }
+     public void setEnvModel(int model){
+         this.model = model;
+         env.setModel(model);
+     }
     
-    void setAgentBox(int i){
-        AB[i].setText(String.valueOf(S.getEnvironment().numbers[i]));
-        AB[i].revalidate(); AB[i].repaint();
+    private void updateBoxStack(int value,boolean isPlacing ){
+        if (value != 0) {
+            
+            value -= 1;
+            
+            if(AB[value].getText().equals("")) {
+                AB[value].setText("8");
+                
+            } else {
+                int currBoxValue = Integer.valueOf(AB[value].getText());
+                
+                if (isPlacing){
+                    AB[value].setText(String.valueOf(currBoxValue-1));
+                    
+                } else {
+                    AB[value].setText(String.valueOf(currBoxValue+1));
+                    
+                }
+                
+            }
+            AB[value].repaint();
+        }
     }
-    
-    void resetAgentBox(){
-        for (int i=0; i<9;i++) {
-            AB[i].setText("");
-            AB[i].revalidate();
-            AB[i].repaint();
+
+    // Menggantikan drawBoard lama
+    void refreshBoardFromEnv() {
+        int[][] board = env.getBoard();
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                int val = board[i][j];
+                updateByAgent(i, j, val, false);
+            }
         }
     }
     
@@ -162,43 +204,18 @@ public class PuzzleFrame extends javax.swing.JFrame {
     void resetAgentState(){
         for (int i=0; i<9;i++) {
             AS[i].setSelected(false);
-            AS[i].revalidate();
             AS[i].repaint();        
         }
     }
     
-    void showInitialAgentStates(){
-        resetAgentState();
-        resetAgentBox();
-        for (int i=0; i<9;i++) setAgentBox(i);
-        this.AgentStatePanel.revalidate(); this.AgentStatePanel.repaint();
-    }
-    void showAgentStates(int aa){
-        // menampilkan status agent yang terbaru
-        System.out.println("show Agent State");
-        
-        resetAgentState();
-        setAgentState(aa-1);
-        setAgentBox(aa-1);
-        
-/*        switch (aa-1) {
-            case 1: showAgentState(0); break;
-            case 2: showAgentState(1); break;
-            case 3: showAgentState(2); break;
-            case 4: showAgentState(3); break;
-            case 5: showAgentState(4); break;
-            case 6: showAgentState(5); break;
-            case 7: showAgentState(6); break;
-            case 8: showAgentState(7); break;
-            case 9: showAgentState(8); break;
+    void resetAgentBox(){
+        for (int i=0; i<9;i++) {
+            AB[i].setText("");
+            AB[i].repaint();
         }
-        
-        for(int i = 0; i < 9; i++) {
-            AS[i].revalidate(); AS[i].repaint();
-        }*/
-        this.AgentStatePanel.revalidate(); this.AgentStatePanel.repaint();
     }
     
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -2336,6 +2353,11 @@ public class PuzzleFrame extends javax.swing.JFrame {
         Agent1Box.setFont(new java.awt.Font("Adobe Arabic", 0, 14)); // NOI18N
         Agent1Box.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         Agent1Box.setText("9");
+        Agent1Box.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Agent1BoxActionPerformed(evt);
+            }
+        });
 
         Agent2Box.setFont(new java.awt.Font("Adobe Arabic", 0, 14)); // NOI18N
         Agent2Box.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -2593,30 +2615,21 @@ public class PuzzleFrame extends javax.swing.JFrame {
     private void LoadPuzzleMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadPuzzleMenuActionPerformed
         int returnVal = LoadPuzzleFile.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            String fileName = LoadPuzzleFile.getSelectedFile().getAbsolutePath();//
-            System.out.println(fileName);
-//try {
-            // What to do with the file, e.g. display it in a TextArea
-                S = new Sudoku(this); //, fileName);
-                
-                if (S.getEnvironment().readAPuzzle(fileName)) {
-                //S.loadPuzzle(fileName);
-                    resetBox();
-                    drawBoard(S.Puzzle.Board);
-                    this.showInitialAgentStates();
-                    //for (int i=0; i < S.getAgentNum(); i++) this.showAgentStates(i);
-                    PuzzlePanel.setVisible(true);
-                    this.AgentStatePanel.setVisible(true);                   
-                }
-                else {
-                    this.NotValidPuzzle.setVisible(true);
-                }
-            //} catch (IOException ex) {
-            //System.out.println("problem accessing file"+file.getAbsolutePath());
-            //}
-        } else {
-            System.out.println("File access cancelled by user.");
-        }        // TODO add your handling code here:
+            String fileName = LoadPuzzleFile.getSelectedFile().getAbsolutePath();
+            System.out.println("Loading: " + fileName);
+
+            if (loadPuzzleFromFile(fileName)) {
+                // Jika berhasil load
+                refreshBoardFromEnv(); // Gambar ulang dari data Env
+                PuzzlePanel.setVisible(true);
+                this.AgentStatePanel.setVisible(true);
+                // Reset tampilan agen (opsional)
+                resetAgentState();
+                resetAgentBox();
+            } else {
+                this.NotValidPuzzle.setVisible(true);
+            }
+        } // TODO add your handling code here:
     }//GEN-LAST:event_LoadPuzzleMenuActionPerformed
 
     private void ClosePuzzleMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClosePuzzleMenuActionPerformed
@@ -2628,17 +2641,69 @@ public class PuzzleFrame extends javax.swing.JFrame {
     private void SolvePuzzleMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SolvePuzzleMenuActionPerformed
         // TODO add your handling code here:
         System.out.println("model PF: "+this.model);
-        S.execute(); //solvePuzzle();
-        resetAgentState();
+        sudokumodel.SudokuEnvironment.SudokuEnvironment.getInstance().setGui(this);
+    
+        new Thread(() -> {
+            startJADE();
+        }).start();
+
     }//GEN-LAST:event_SolvePuzzleMenuActionPerformed
 
+    private void startJADE() {
+        try {
+            Runtime rt = Runtime.instance();
+            Profile p = new ProfileImpl();
+            p.setParameter(Profile.MAIN_HOST, "localhost");
+            p.setParameter(Profile.GUI, "true");
+            
+            AgentContainer mc = rt.createMainContainer(p);
+            
+            // Args untuk Controller
+            Object[] controllerArgs = new Object[] { 
+                "9", 
+                String.valueOf(this.model), 
+                "RoundRobin", 
+                "GUI_LOADED" 
+            };
+            
+            // Panggil AGENT CONTROLLER (Nama kelas sudah diperbaiki)
+            AgentController ac = mc.createNewAgent("Controller", 
+                    "sudokumodel.AgentController.AgentController", controllerArgs);
+            ac.start();
+            
+            // Buat Robot Agen
+            if (this.model == 1) {
+                 // Model 1: Placer & Taker
+                 Object[] argsP = new Object[] {"0", "1"}; 
+                 mc.createNewAgent("RobotPlacer", 
+                        "sudokumodel.AgentPlacer.AgentPlacer", argsP).start();
+
+                mc.createNewAgent("RobotTaker", 
+                        "sudokumodel.AgentTaker.AgentTaker", new Object[] {}).start();
+                 
+            } else {
+                // Model 2-4: 9 Placer
+                for (int i = 1; i <= 9; i++) {
+                    Object[] args = new Object[] { String.valueOf(i), String.valueOf(this.model) };
+                    mc.createNewAgent("Robot" + i, 
+                            "sudokumodel.AgentPlacer.AgentPlacer", args).start();
+                }
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error starting JADE: " + e.getMessage());
+        }
+    }
+    
     private void Model2MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Model2MenuActionPerformed
         // TODO add your handling code here:
         Model1Menu.setSelected(false);
         Model2Menu.setSelected(true);
         Model3Menu.setSelected(false);
         Model4Menu.setSelected(false);
-        this.model = 2;
+        setEnvModel(2);
+
     }//GEN-LAST:event_Model2MenuActionPerformed
 
     private void Model3MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Model3MenuActionPerformed
@@ -2647,7 +2712,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
         Model2Menu.setSelected(false);
         Model3Menu.setSelected(true);
         Model4Menu.setSelected(false);
-        this.model = 3;
+        setEnvModel(3);
     }//GEN-LAST:event_Model3MenuActionPerformed
 
     private void Model4MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Model4MenuActionPerformed
@@ -2656,7 +2721,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
         Model2Menu.setSelected(false);
         Model3Menu.setSelected(false);
         Model4Menu.setSelected(true);
-        this.model = 4;
+        setEnvModel(4);
     }//GEN-LAST:event_Model4MenuActionPerformed
 
     private void Model1MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Model1MenuActionPerformed
@@ -2665,7 +2730,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
         Model2Menu.setSelected(false);
         Model3Menu.setSelected(false);
         Model4Menu.setSelected(false);
-        this.model = 1;
+        setEnvModel(1);
     }//GEN-LAST:event_Model1MenuActionPerformed
 
     private void C15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_C15ActionPerformed
@@ -2723,8 +2788,8 @@ public class PuzzleFrame extends javax.swing.JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             String fileName = LoadPuzzleFile.getSelectedFile().getAbsolutePath();//
             // pengecekan apakah sudah ada file dengan nama tersebut?
-            if (S == null) S = new Sudoku(this);
-            S.getEnvironment().saveAPuzzle(fileName, CB);
+//            if (S == null) S = new Sudoku(this);
+//            S.getEnvironment().saveAPuzzle(fileName, CB);
 
         }
     }//GEN-LAST:event_SaveButtonActionPerformed
@@ -2740,13 +2805,17 @@ public class PuzzleFrame extends javax.swing.JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             String fileName = LoadPuzzleFile.getSelectedFile().getAbsolutePath();//
             // pengecekan apakah sudah ada file dengan nama tersebut?
-            if (S == null) S = new Sudoku(this);
-            S.getEnvironment().editAPuzzle(fileName, CB);
+//            if (S == null) S = new Sudoku(this);
+//            S.getEnvironment().editAPuzzle(fileName, CB);
             this.CreatePuzzlePanel.revalidate();
             this.CreatePuzzlePanel.repaint();
             this.CreatePuzzleFrame.setVisible(true);
         }
     }//GEN-LAST:event_EditPuzzleMenuActionPerformed
+
+    private void Agent1BoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Agent1BoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Agent1BoxActionPerformed
     
     int getModel(){
         return this.model;   //default
@@ -3001,5 +3070,5 @@ public class PuzzleFrame extends javax.swing.JFrame {
     private JTextField[] AB;
     private JComboBox[] CB;
     private int model = 1;
-    private Sudoku S;
+//    private Sudoku S;
 }
