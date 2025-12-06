@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import sudokumodel.SudokuEnvironment.SudokuEnvironment;
 
 public class PuzzleFrame extends javax.swing.JFrame {
@@ -89,49 +90,94 @@ public class PuzzleFrame extends javax.swing.JFrame {
     }
 
     private boolean loadPuzzleFromFile(String fileName) {
+    // Gunakan try-with-resources agar file otomatis tertutup
     try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
         String line;
         int[][] newBoard = new int[9][9];
         
-        int count = 0;
+        int count = 0; // Kita akan menghitung dari 0 sampai 80
+        
         while ((line = br.readLine()) != null && count < 81) {
             line = line.trim();
-            if (line.isEmpty()) continue; 
+            if (line.isEmpty()) continue; // Skip baris kosong
             
             try {
+                // Parsing angka (aman untuk format 1 angka per baris)
+                // Jika file ternyata format grid (banyak angka sebaris), 
+                // ganti bagian ini dengan split spasi.
+                // Tapi untuk formatmu yg sekarang, ini sudah OK.
                 int val = Integer.parseInt(line);
+                
+                // Konversi urutan 0-80 menjadi koordinat baris/kolom
                 int row = count / 9;  
                 int col = count % 9;  
+                
                 newBoard[row][col] = val;
-     
                 count++;
+                
             } catch (NumberFormatException e) {
-                continue;
+                continue; // Skip jika bukan angka
             }
         }
         
-        // Clear environment dan load board baru
-        env.clearBoard();
+        // --- BAGIAN KRUSIAL (PERBAIKAN) ---
         
-        for(int i = 0; i < 9; i++) {
-            AB[i].setText("9");
-            for(int j = 0; j < 9; j++) {
-                if(newBoard[i][j] != 0) {
-                    env.placeNumber(i, j, newBoard[i][j], true);
-                    
+        // 1. Masukkan ke Environment sebagai INITIAL BOARD
+        // (Jangan pakai placeNumber, agar tidak masuk History Stack)
+        SudokuEnvironment.getInstance().setInitialBoard(newBoard);
+        
+        int[] remaining = new int[10]; 
+        for(int k=1; k<=9; k++) remaining[k] = 9;
+        
+        for(int i=0; i<9; i++) {
+            for(int j=0; j<9; j++) {
+                int val = newBoard[i][j];
+                if (val > 0) {
+                    remaining[val]--; 
                 }
             }
         }
         
-        System.out.println("Puzzle loaded successfully!");
-        env.printBoard();
+        
+        SwingUtilities.invokeLater(() -> {
+            for(int k=1; k<=9; k++) {
+                AB[k-1].setText(String.valueOf(remaining[k]));
+            }
+
+            AgentStatePanel.revalidate();
+            AgentStatePanel.repaint();
+        });
+        
+        System.out.println("Puzzle loaded successfully! (Count: " + count + ")");
         return true;
         
     } catch (IOException e) {
         e.printStackTrace();
+        System.err.println("Gagal baca file: " + e.getMessage());
         return false;
     }
 }
+    
+    private void refreshBoardFromEnv() {
+        // Ambil papan dari Environment
+        int[][] currentBoard = SudokuEnvironment.getInstance().getBoard();
+
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                int val = currentBoard[r][c];
+
+                if (val != 0) {
+                    PP[r][c].setText(String.valueOf(val));
+                    PP[r][c].setForeground(Color.BLACK);
+                } else {
+                    PP[r][c].setText("");
+                }
+            }
+        }
+
+        // Refresh Panel agar perubahan terlihat
+        PuzzlePanel.repaint();
+    }
 
     public void updateByAgent(int row, int col, int value, boolean isPlacing) {
         Box boxObject = null;
@@ -146,7 +192,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
         } else {
             PP[row][col].setText(String.valueOf(value));
 
-            PP[row][col].setForeground(Color.BLACK); 
+            PP[row][col].setForeground(Color.BLUE); 
             
         }
         updateBoxStack(value, isPlacing);
@@ -182,16 +228,6 @@ public class PuzzleFrame extends javax.swing.JFrame {
         }
     }
 
-    // Menggantikan drawBoard lama
-    void refreshBoardFromEnv() {
-        int[][] board = env.getBoard();
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                int val = board[i][j];
-                updateByAgent(i, j, val, false);
-            }
-        }
-    }
     
     void resetBox(){
         for (int i=0; i<9; i++){
@@ -2619,11 +2655,9 @@ public class PuzzleFrame extends javax.swing.JFrame {
             System.out.println("Loading: " + fileName);
 
             if (loadPuzzleFromFile(fileName)) {
-                // Jika berhasil load
                 refreshBoardFromEnv(); // Gambar ulang dari data Env
                 PuzzlePanel.setVisible(true);
                 this.AgentStatePanel.setVisible(true);
-                // Reset tampilan agen (opsional)
                 resetAgentState();
                 resetAgentBox();
             } else {
@@ -2666,7 +2700,6 @@ public class PuzzleFrame extends javax.swing.JFrame {
                 "GUI_LOADED" 
             };
             
-            // Panggil AGENT CONTROLLER (Nama kelas sudah diperbaiki)
             AgentController ac = mc.createNewAgent("Controller", 
                     "sudokumodel.AgentController.AgentController", controllerArgs);
             ac.start();
@@ -2682,7 +2715,6 @@ public class PuzzleFrame extends javax.swing.JFrame {
                         "sudokumodel.AgentTaker.AgentTaker", new Object[] {}).start();
                  
             } else {
-                // Model 2-4: 9 Placer
                 for (int i = 1; i <= 9; i++) {
                     Object[] args = new Object[] { String.valueOf(i), String.valueOf(this.model) };
                     mc.createNewAgent("Robot" + i, 

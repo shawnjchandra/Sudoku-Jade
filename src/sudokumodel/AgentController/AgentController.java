@@ -13,34 +13,115 @@ public class AgentController extends Agent {
 
     @Override
     protected void setup() {
-        Object[] args = getArguments();
-        
-        // Parse arguments
-//        if (args != null && args.length >= 4) {
-//            try {
-//   
-//                model = Integer.parseInt((String) args[1]);
-//                System.out.println("Model: " + model);
-//
-//            } catch (Exception e) {
-//                System.err.println("Controller: Error parsing arguments");
-//                e.printStackTrace();
-//            }
-//        }
-        
-        model = SudokuEnvironment.getInstance().getModel();
-        initRobotNames();
-        
-        // Cetak board awal
-        System.out.println("\n=== INITIAL BOARD ===");
-        SudokuEnvironment.getInstance().printBoard();
-        
-        addBehaviour(new WakerBehaviour(this, 1000) {
-            @Override
-            protected void onWake() {
-                addBehaviour(new TokenPassingBehaviour());
+        // Ambil Model dari Environment
+        int currentModel = SudokuEnvironment.getInstance().getModel();
+        System.out.println("Controller start. Detected Model: " + currentModel);
+
+        if (currentModel == 1) {
+            // MODEL 1: BACKTRACKING (Logic lama kita)
+            addBehaviour(new TokenPassingBehaviour());
+        } else {
+            // MODEL 2-4: FIXED POINT ITERATION (Logic baru)
+            addBehaviour(new FixedPointBehaviour());
+        }
+    }
+    
+     private class FixedPointBehaviour extends SimpleBehaviour {
+        private int currentRobot = 1; // Mulai dari Robot 1
+        private int totalMovesInRound = 0; // Menghitung perubahan di 1 putaran penuh
+        private int roundNumber = 1;
+        private int step = 0;
+        private String replyWithKey;
+
+        @Override
+        public void action() {
+            switch (step) {
+                case 0: // KIRIM REQUEST KE ROBOT i
+                    ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+                    // Panggil agen spesifik: "Robot1", "Robot2", dst.
+                    msg.addReceiver(new AID("Robot" + currentRobot, AID.ISLOCALNAME));
+                    msg.setContent("YOUR_TURN_SPECIFIC");
+                    
+                    replyWithKey = "req-iter-" + System.currentTimeMillis();
+                    msg.setReplyWith(replyWithKey);
+                    
+                    System.out.println("Round " + roundNumber + ": Memanggil Robot" + currentRobot);
+                    myAgent.send(msg);
+                    step = 1;
+                    break;
+
+                case 1: // TERIMA LAPORAN
+                    MessageTemplate mt = MessageTemplate.MatchInReplyTo(replyWithKey);
+                    ACLMessage reply = myAgent.receive(mt);
+                    
+                    if (reply != null) {
+                        // Robot melapor berapa angka yang dia taruh
+                        int moves = Integer.parseInt(reply.getContent());
+                        totalMovesInRound += moves;
+                        
+                        if (moves > 0) {
+                            System.out.println(" -> Robot" + currentRobot + " menaruh " + moves + " angka.");
+                        }
+
+                        // Lanjut ke robot berikutnya
+                        currentRobot++;
+                        step = 0;
+
+                        // CEK APAKAH SUDAH SELESAI 1 PUTARAN (Robot 1-9 sudah jalan semua?)
+                        if (currentRobot > 9) {
+                            step = 2; // Evaluasi Akhir Ronde
+                        }
+                    } else {
+                        block();
+                    }
+                    break;
+                
+                case 2: // EVALUASI FIXED POINT (Termination Condition)
+                    System.out.println("=== END OF ROUND " + roundNumber + " ===");
+                    System.out.println("Total perubahan di papan: " + totalMovesInRound);
+
+                    // LOGIKA TERMINATION:
+                    // Jika dalam satu putaran penuh (Robot 1-9) TIDAK ADA yang menaruh angka (0 moves),
+                    // berarti kondisi "Fixed Point" tercapai. Papan tidak akan berubah lagi.
+                    
+                    if (totalMovesInRound == 0) {
+                        System.out.println("STOP. Tidak ada perubahan lagi (Converged).");
+                        
+                        if (SudokuEnvironment.getInstance().isSolved()) {
+                             System.out.println("RESULT: SOLVED! 🎉");
+                        } else {
+                             System.out.println("RESULT: STUCK / PARTIAL SOLUTION (Sifat Model 2-4)");
+                        }
+                        
+                        // Matikan semua agen
+                        killAllAgents9(); 
+                        myAgent.doDelete();
+                    } else {
+                        // Jika masih ada perubahan, LANJUT ronde baru
+                        System.out.println("Masih ada progress. Lanjut Ronde " + (roundNumber + 1));
+                        roundNumber++;
+                        currentRobot = 1;      // Reset ke Robot 1
+                        totalMovesInRound = 0; // Reset counter
+                        step = 0;              // Ulang loop
+                    }
+                    break;
             }
-        });
+        }
+
+        @Override
+        public boolean done() {
+            return false;
+        }
+        
+        // Helper untuk matikan Robot1 - Robot9
+        private void killAllAgents9() {
+            ACLMessage bye = new ACLMessage(ACLMessage.REQUEST);
+            bye.setContent("SHUTDOWN"); // Pastikan agen punya handler shutdown
+            for(int i=1; i<=9; i++) {
+                bye.addReceiver(new AID("Robot"+i, AID.ISLOCALNAME));
+            }
+            myAgent.send(bye);
+        }
     }
     
     private void initRobotNames() {
@@ -147,103 +228,7 @@ public class AgentController extends Agent {
         }
     }
     
-    private class FixedPointBehaviour extends SimpleBehaviour {
-        private int currentRobot = 1; // Mulai dari Robot 1
-        private int totalMovesInRound = 0; // Menghitung perubahan di 1 putaran penuh
-        private int roundNumber = 1;
-        private int step = 0;
-        private String replyWithKey;
-
-        @Override
-        public void action() {
-            switch (step) {
-                case 0: // KIRIM REQUEST KE ROBOT i
-                    ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-                    // Panggil agen spesifik: "Robot1", "Robot2", dst.
-                    msg.addReceiver(new AID("Robot" + currentRobot, AID.ISLOCALNAME));
-                    msg.setContent("YOUR_TURN_SPECIFIC");
-                    
-                    replyWithKey = "req-iter-" + System.currentTimeMillis();
-                    msg.setReplyWith(replyWithKey);
-                    
-                    System.out.println("Round " + roundNumber + ": Memanggil Robot" + currentRobot);
-                    myAgent.send(msg);
-                    step = 1;
-                    break;
-
-                case 1: // TERIMA LAPORAN
-                    MessageTemplate mt = MessageTemplate.MatchInReplyTo(replyWithKey);
-                    ACLMessage reply = myAgent.receive(mt);
-                    
-                    if (reply != null) {
-                        // Robot melapor berapa angka yang dia taruh
-                        int moves = Integer.parseInt(reply.getContent());
-                        totalMovesInRound += moves;
-                        
-                        if (moves > 0) {
-                            System.out.println(" -> Robot" + currentRobot + " menaruh " + moves + " angka.");
-                        }
-
-                        // Lanjut ke robot berikutnya
-                        currentRobot++;
-                        step = 0;
-
-                        // CEK APAKAH SUDAH SELESAI 1 PUTARAN (Robot 1-9 sudah jalan semua?)
-                        if (currentRobot > 9) {
-                            step = 2; // Evaluasi Akhir Ronde
-                        }
-                    } else {
-                        block();
-                    }
-                    break;
-                
-                case 2: // EVALUASI FIXED POINT (Termination Condition)
-                    System.out.println("=== END OF ROUND " + roundNumber + " ===");
-                    System.out.println("Total perubahan di papan: " + totalMovesInRound);
-
-                    // LOGIKA TERMINATION:
-                    // Jika dalam satu putaran penuh (Robot 1-9) TIDAK ADA yang menaruh angka (0 moves),
-                    // berarti kondisi "Fixed Point" tercapai. Papan tidak akan berubah lagi.
-                    
-                    if (totalMovesInRound == 0) {
-                        System.out.println("STOP. Tidak ada perubahan lagi (Converged).");
-                        
-                        if (SudokuEnvironment.getInstance().isSolved()) {
-                             System.out.println("RESULT: SOLVED! 🎉");
-                        } else {
-                             System.out.println("RESULT: STUCK / PARTIAL SOLUTION (Sifat Model 2-4)");
-                        }
-                        
-                        // Matikan semua agen
-                        killAllAgents9(); 
-                        myAgent.doDelete();
-                    } else {
-                        // Jika masih ada perubahan, LANJUT ronde baru
-                        System.out.println("Masih ada progress. Lanjut Ronde " + (roundNumber + 1));
-                        roundNumber++;
-                        currentRobot = 1;      // Reset ke Robot 1
-                        totalMovesInRound = 0; // Reset counter
-                        step = 0;              // Ulang loop
-                    }
-                    break;
-            }
-        }
-
-        @Override
-        public boolean done() {
-            return false;
-        }
-        
-        // Helper untuk matikan Robot1 - Robot9
-        private void killAllAgents9() {
-            ACLMessage bye = new ACLMessage(ACLMessage.REQUEST);
-            bye.setContent("SHUTDOWN"); // Pastikan agen punya handler shutdown
-            for(int i=1; i<=9; i++) {
-                bye.addReceiver(new AID("Robot"+i, AID.ISLOCALNAME));
-            }
-            myAgent.send(bye);
-        }
-    }
+   
     
         
         private void killAllAgents() {

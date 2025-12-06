@@ -125,7 +125,19 @@ public class SudokuEnvironment {
         return true;
     }
 
-    
+        public void setInitialBoard(int[][] newBoard) {
+        // Copy array value (Deep copy) agar aman
+        for (int i = 0; i < 9; i++) {
+            System.arraycopy(newBoard[i], 0, this.board[i], 0, 9);
+        }
+
+        // Reset Logic
+        historyStack.clear();
+        backtrackMemory.clear();
+
+        // Reset Model ke default (atau biarkan sesuai terakhir)
+        // this.activeModel = 1; 
+    }
     
     public synchronized void resetMemoryAt(int row, int col) {
         String key = row + "," + col;

@@ -25,35 +25,29 @@ public class AgentPlacer extends Agent {
     @Override
     protected void setup() {
         Object[] args = getArguments();
-        
-        if (args != null && args.length >= 2) {
+
+        // Default anggap sebagai Generic (0)
+        myNumber = 0; 
+
+        // Cek Argumen
+        if (args != null && args.length > 0) {
             try {
                 myNumber = Integer.parseInt((String) args[0]);
-                model = Integer.parseInt((String) args[1]);
-                
-                String agentType;
-                if (model == 1 && myNumber == 0) {
-                    agentType = "Generic Placer (dapat taruh 1-9)";
-                } else {
-                    agentType = "Specific Placer (hanya taruh angka " + myNumber + ")";
-                }
-                
-                System.out.println(getAID().getLocalName() + " started - " + agentType);
-                
-            } catch (Exception e) {
-                System.err.println(" AgentPlacer: Error parsing arguments");
-                e.printStackTrace();
-                doDelete();
-                return;
+            } catch (NumberFormatException e) {
+                System.err.println("Error parsing argument, defaulting to Generic.");
             }
-        } else {
-            System.err.println("AgentPlacer: Missing arguments [number, model]");
-            doDelete();
-            return;
         }
 
-        // Tambahkan behaviour untuk menerima giliran
-        addBehaviour(new PlacerBehaviour());
+        // LOGIKA PEMILIHAN BEHAVIOUR
+        if (myNumber == 0) {
+            // Jika angkanya 0 (atau null), berarti ini Model 1 (Generic Backtracking)
+            System.out.println("RobotPlacer (Generic) started - Ready for Backtracking.");
+            addBehaviour(new PlacerBehaviour()); // Pastikan nama classnya sesuai (yang logika lama)
+        } else {
+            // Jika angkanya 1-9, berarti ini Model 2-4 (Specific Fixed Point)
+            System.out.println("Robot" + myNumber + " (Specific) started - Ready for Fixed Point.");
+            addBehaviour(new SpecificPlacerBehaviour()); // Class baru untuk logika fixed point
+        }
     }
     
     private class SpecificPlacerBehaviour extends CyclicBehaviour {
