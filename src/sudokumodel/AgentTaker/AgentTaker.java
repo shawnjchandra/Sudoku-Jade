@@ -7,7 +7,6 @@ import jade.lang.acl.MessageTemplate;
 import sudokumodel.SudokuEnvironment.SudokuEnvironment;
 
 public class AgentTaker extends Agent {
-    private int placerFailCount = 0; // Track berapa kali Placer gagal
     
     @Override
     protected void setup() {
@@ -18,7 +17,7 @@ public class AgentTaker extends Agent {
     private class TakerBehaviour extends CyclicBehaviour {
         @Override
         public void action() {
-//            Template Message untuk menangani input matikan atau giliran
+            //Template Message untuk menangani input matikan atau giliran
             MessageTemplate mtTurn = MessageTemplate.and(
                 MessageTemplate.MatchConversationId("sudoku-round"),
                 MessageTemplate.MatchPerformative(ACLMessage.REQUEST)
@@ -39,18 +38,18 @@ public class AgentTaker extends Agent {
                     return;
                 }
                 
-                // Cek apakah ada info dari Controller tentang Placer
+
                 if (msg.getConversationId().equals("sudoku-round") && 
                     msg.getContent().startsWith("YOUR_TURN")) {
                     
-                    // Parse: "YOUR_TURN:placerFailed"
+
                     String[] parts = msg.getContent().split(":");
                     boolean placerFailed = false;
                     if (parts.length > 1) {
                         placerFailed = Boolean.parseBoolean(parts[1]);
                     }
                     
-                    // Cek Backtracking
+
                     boolean success = doBacktrack(placerFailed);
                     System.out.println("Taker: Diminta backtrack? " + placerFailed);
 
@@ -72,7 +71,7 @@ public class AgentTaker extends Agent {
             // 2. ada history untuk di-backtrack
             
             if (!placerJustFailed) {
-                // Placer berhasil, jangan backtrack
+         
                 System.out.println(getAID().getLocalName() + 
                                  " skipped (Placer is making progress)");
                 return false;
@@ -84,7 +83,7 @@ public class AgentTaker extends Agent {
                 return false;
             }
             
-            // Lakukan backtrack
+         
             boolean result = env.removeLastNumber();
             
             if (result) {

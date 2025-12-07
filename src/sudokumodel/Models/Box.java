@@ -8,7 +8,7 @@ package sudokumodel.Models;
  *
  * @author Apple's 1
  */
-//Tidak ada modifikasi
+
 public class Box {
   private int Value;
   private int agentType;
@@ -35,9 +35,7 @@ public class Box {
     System.out.println (this.Value);
   }
 
-/*  void printPosition(){
-    System.out.println ("("+this.posX+","+this.posY+")");
-  }*/
+
   public int getValue(){
       return this.Value;
   }

@@ -12,7 +12,7 @@ import sudokumodel.Models.Box;
  * Cecilia E. Nugraheni - Luciana Abednego
  */
 
-// Tidak ada modifikasi
+
 public class Cell {
   private Box box;
   private boolean fixed;
@@ -45,22 +45,7 @@ public class Cell {
     this.pos = p;
   }  
   
-  /*Cell(int x, int y){
-    this.box = null;
-    this.fixed = false;
-    this.posX = x;
-    this.posY = y;
-    this.pos = new Position(x,y);
-  }  
-  
-  Cell(Box b, int x, int y){
-    this.box = b;
-    this.fixed = false;
-    this.posX = x;
-    this.posY = y;
-    this.pos = new Position(x,y);
-  }
-  */
+
   public Box getBox () {
       return box;
   }

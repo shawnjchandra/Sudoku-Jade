@@ -8,7 +8,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 public class AgentController extends Agent {
-//    Fallback model 1
+    //Fallback model 1
     private int model = 1; 
     private String[] robotNames;
 
@@ -22,7 +22,7 @@ public class AgentController extends Agent {
             // MODEL 1: backtracking
             addBehaviour(new TokenPassingBehaviour());
         } else {
-            // MODEL 2-4: fixed point iteration
+            // MODEL 2-4: yang ikutin rules 
             addBehaviour(new FixedPointBehaviour());
         }
     }
@@ -147,9 +147,9 @@ public class AgentController extends Agent {
                 msg.addReceiver(new AID(targetAgent, AID.ISLOCALNAME));
                 msg.setConversationId("sudoku-round");
                 
-                // Logika Pesan: Beri tahu konteks ke agen
+                //Beri tahu konteks ke agen
                 if (targetAgent.equals("RobotTaker")) {
-                    // Jika kita memanggil Taker, berarti Placer PASTI baru saja gagal
+                    // Jika memanggil Taker, berarti Placer PASTI baru gagal
                     msg.setContent("YOUR_TURN:true"); // true = placerFailed
                 } else {
                     // Jika memanggil Placer, suruh dia jalan normal
@@ -177,7 +177,7 @@ public class AgentController extends Agent {
                         boolean success = Boolean.parseBoolean(reply.getContent());
                         String senderName = reply.getSender().getLocalName();
 
-                        // --- LOGIKA INTI BACKTRACKING ---
+                        // Backtracking
                         
                         if (senderName.equals("RobotPlacer")) {
                             if (success) {
@@ -205,7 +205,7 @@ public class AgentController extends Agent {
                             }
                         }
                         
-                        // Cek kondisi selesai (Sudoku Solved)
+                        // Cek kondisi selesai
                         if (SudokuEnvironment.getInstance().isSolved()) {
                             System.out.println("\n SUDOKU SOLVED! 🎉 dalam " + movesCount + " langkah");
                             killAllAgents();

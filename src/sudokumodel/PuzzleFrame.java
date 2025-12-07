@@ -89,7 +89,6 @@ public class PuzzleFrame extends javax.swing.JFrame {
     }
 
     private boolean loadPuzzleFromFile(String fileName) {
-    // Gunakan try-with-resources agar file otomatis tertutup
     try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
         String line;
         int[][] newBoard = new int[9][9];
@@ -104,7 +103,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
                 // Parsing angka
                 int val = Integer.parseInt(line);
                 
-                // Konversi urutan 0-80 menjadi koordinat baris/kolom
+                // Konversi urutan 0-80 jadi koordinat baris/kolom
                 int row = count / 9;  
                 int col = count % 9;  
                 
@@ -168,11 +167,11 @@ public class PuzzleFrame extends javax.swing.JFrame {
             }
         }
 
-        // Refresh Panel agar perubahan terlihat
+        // Refresh Panel biar perubahan terlihat
         PuzzlePanel.repaint();
     }
 
-    // Update isi angka dari puzzle    
+    // Update isi angka dari puzzle
     public void updateByAgent(int row, int col, int value, boolean isPlacing) {
         Box boxObject = null;
         if (value != 0) {
@@ -210,7 +209,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
             } else {
                 int currBoxValue = Integer.valueOf(AB[value].getText());
                 
-//                IsPlacing untuk menandakan pada model 1, agenPlacer atau Taker yang sedang bekerja
+                //Menandakan agenPlacer atau Taker yang sedang bekerja
                 if (isPlacing){
                     AB[value].setText(String.valueOf(currBoxValue-1));
                 } else {
@@ -2669,7 +2668,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_SolvePuzzleMenuActionPerformed
 
-//    Untuk mulai JADE
+    //Untuk mulai JADE
     private void startJADE() {
         try {
             Runtime rt = Runtime.instance();
@@ -2679,7 +2678,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
             
             AgentContainer mc = rt.createMainContainer(p);
             
-            // Argumen untuk Controller
+            // Buat Agen Controller 
             Object[] controllerArgs = new Object[] { 
                 "9", 
                 String.valueOf(this.model), 
@@ -2692,7 +2691,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
                     "sudokumodel.AgentController.AgentController", controllerArgs);
             ac.start();
             
-            // Buat Robot Agen
+            // Buat Agen Placer & Taker
             if (this.model == 1) {
                  // Model 1: Placer & Taker
                  Object[] argsP = new Object[] {"0", "1"}; 
@@ -2703,7 +2702,7 @@ public class PuzzleFrame extends javax.swing.JFrame {
                         "sudokumodel.AgentTaker.AgentTaker", new Object[] {}).start();
                  
             } else {
-//                Model 2-4 
+                //Model 2-4 
                 for (int i = 1; i <= 9; i++) {
                     Object[] args = new Object[] { String.valueOf(i), String.valueOf(this.model) };
                     mc.createNewAgent("Robot" + i, 

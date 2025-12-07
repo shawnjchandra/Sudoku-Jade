@@ -61,7 +61,7 @@ public class SudokuEnvironment {
 
         System.out.println("Env: [TAKE] Cabut " + val + " dari [" + row + "," + col + "]. Ingat next start > " + val);
         
-        // Update GUI
+
         if (gui != null) {
             SwingUtilities.invokeLater(() -> gui.updateByAgent(row, col, val, false));
         }
@@ -70,13 +70,13 @@ public class SudokuEnvironment {
     }
     
 
-    // Method baru untuk Placer bertanya "Mulai dari angka berapa?"
+
     public synchronized int getStartValueFor(int row, int col) {
         String key = row + "," + col;
         return backtrackMemory.getOrDefault(key, 0);
     }
     
-    // PENTING: Update method placeNumber (dipakai Placer)
+
     public synchronized boolean placeNumber(int row, int col, int num, boolean isPlacing) {
         // ... validasi standar sudoku ...
         if (!isValidMove(row, col, num)) return false;
@@ -84,7 +84,7 @@ public class SudokuEnvironment {
         board[row][col] = num;
         historyStack.push(new int[]{row, col, num});
         
-        // Update GUI ...
+        // Update GUI
         if (gui != null) {
             SwingUtilities.invokeLater(() -> gui.updateByAgent(row, col, num, isPlacing));
         }
@@ -92,7 +92,7 @@ public class SudokuEnvironment {
     }
 
         public void setInitialBoard(int[][] newBoard) {
-        // Copy array value (Deep copy) agar aman
+ 
         for (int i = 0; i < 9; i++) {
             System.arraycopy(newBoard[i], 0, this.board[i], 0, 9);
         }
@@ -108,10 +108,10 @@ public class SudokuEnvironment {
     }
     
     public boolean isValidMove(int row, int col, int val) {
-        // Cek jika sel sudah terisi
+   
         if (board[row][col] != 0) return false;
 
-        // Cek Sub-grid 3x3
+
         if (!isSafeStandard(row, col, val)) {
             return false;
         }
@@ -160,22 +160,20 @@ public class SudokuEnvironment {
 
             boolean conditionMet = false;
 
-            // Syarat 1: Di baris 'r' (global) sudah ada angka 'val'?
+
             if (subBoardRowHasNumber(r, val)) {
                 conditionMet = true;
             }
-            // Jika untuk salah satu baris tetangga, tidak ada syarat yang terpenuhi,
-            // maka kita TIDAK BOLEH menaruh angka di sini.
             if (!conditionMet) return false;
         }
 
         // Aturan B: Cek kolom lain dalam sub-board yang sama
         for (int c = startCol; c < startCol + 3; c++) {
-            if (c == col) continue; // Skip kolom kita sendiri
+            if (c == col) continue; // Skip kolom sendiri
 
             boolean conditionMet = false;
 
-            // Syarat 1: Di kolom 'c' (global) sudah ada angka 'val'?
+
             if (subBoardColHasNumber(c, val)) {
                 conditionMet = true;
             }
@@ -196,18 +194,17 @@ public class SudokuEnvironment {
 
             boolean conditionMet = false;
             
-            // Syarat 2 (Model 2): Cell sejajar (r, col) tidak kosong?
+       
             if (subBoardRowHasNumber(r, val) || board[r][col] != 0) {
                 conditionMet = true;
             }
-            // Jika untuk salah satu baris tetangga, tidak ada syarat yang terpenuhi,
-            // maka kita TIDAK BOLEH menaruh angka di sini.
+     
             if (!conditionMet) return false;
         }
 
         // Aturan B: Cek kolom lain dalam sub-board yang sama
         for (int c = startCol; c < startCol + 3; c++) {
-            if (c == col) continue; // Skip kolom kita sendiri
+            if (c == col) continue; // Skip kolom sendiri
 
             boolean conditionMet = false;
 
@@ -234,8 +231,7 @@ public class SudokuEnvironment {
             if (subBoardRowHasNumber(r, val) || board[r][col] != 0 || isSubRowFull(r, startCol)) {
                 conditionMet = true;
             }
-            // Jika untuk salah satu baris tetangga, tidak ada syarat yang terpenuhi,
-            // maka kita TIDAK BOLEH menaruh angka di sini.
+
             if (!conditionMet) return false;
         }
 
@@ -278,7 +274,7 @@ public class SudokuEnvironment {
         return false;
     }
 
-    // Cek apakah 3 kotak di baris r (dalam sub-grid) sudah terisi semua
+
     private boolean isSubRowFull(int r, int startCol) {
         for (int c = startCol; c < startCol + 3; c++) {
             if (board[r][c] == 0) return false;
@@ -286,7 +282,7 @@ public class SudokuEnvironment {
         return true;
     }
 
-    // Cek apakah 3 kotak di kolom c (dalam sub-grid) sudah terisi semua
+
     private boolean isSubColFull(int c, int startRow) {
         for (int r = startRow; r < startRow + 3; r++) {
             if (board[r][c] == 0) return false;

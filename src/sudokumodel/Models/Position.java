@@ -9,7 +9,7 @@ package sudokumodel.Models;
  * @author CEN
  */
 
-//Tidak ada modifikasi
+
 public class Position {
     private int posX;
     private int posY;
