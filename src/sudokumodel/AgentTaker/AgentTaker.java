@@ -18,6 +18,7 @@ public class AgentTaker extends Agent {
     private class TakerBehaviour extends CyclicBehaviour {
         @Override
         public void action() {
+//            Template Message untuk menangani input matikan atau giliran
             MessageTemplate mtTurn = MessageTemplate.and(
                 MessageTemplate.MatchConversationId("sudoku-round"),
                 MessageTemplate.MatchPerformative(ACLMessage.REQUEST)
@@ -48,6 +49,8 @@ public class AgentTaker extends Agent {
                     if (parts.length > 1) {
                         placerFailed = Boolean.parseBoolean(parts[1]);
                     }
+                    
+                    // Cek Backtracking
                     boolean success = doBacktrack(placerFailed);
                     System.out.println("Taker: Diminta backtrack? " + placerFailed);
 
@@ -64,9 +67,9 @@ public class AgentTaker extends Agent {
         private boolean doBacktrack(boolean placerJustFailed) {
             SudokuEnvironment env = SudokuEnvironment.getInstance();
             
-            // LOGIKA BARU: Hanya backtrack jika:
-            // 1. Placer baru saja gagal, DAN
-            // 2. Ada history untuk di-backtrack
+            // Backtrack jika:
+            // 1. placer gagal, dan
+            // 2. ada history untuk di-backtrack
             
             if (!placerJustFailed) {
                 // Placer berhasil, jangan backtrack

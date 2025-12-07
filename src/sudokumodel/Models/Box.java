@@ -8,11 +8,10 @@ package sudokumodel.Models;
  *
  * @author Apple's 1
  */
+//Tidak ada modifikasi
 public class Box {
   private int Value;
   private int agentType;
-//  private int posX;
-//  private int posY;
   
   public Box (int v){
       this.Value = v;
@@ -20,8 +19,7 @@ public class Box {
 
   public Box(int v, int x, int y){
     this.Value = v;
-  //  this.posX = x;
-  //  this.posY = y;
+
   }
   
   public Box(int v, int a){
@@ -30,7 +28,6 @@ public class Box {
   }
 
   void printBox(){
-//    System.out.println ("("+this.posX+","+this.posY+","+this.Value+")");
     System.out.println ("("+this.Value+")");
   }
 

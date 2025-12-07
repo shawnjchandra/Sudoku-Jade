@@ -11,11 +11,11 @@ import sudokumodel.Models.Box;
  *
  * Cecilia E. Nugraheni - Luciana Abednego
  */
+
+// Tidak ada modifikasi
 public class Cell {
   private Box box;
   private boolean fixed;
-//  int posX;
-//  int posY;
   private Position pos;
   
   Cell () {

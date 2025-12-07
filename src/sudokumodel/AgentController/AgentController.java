@@ -8,6 +8,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
 public class AgentController extends Agent {
+//    Fallback model 1
     private int model = 1; 
     private String[] robotNames;
 
@@ -18,10 +19,10 @@ public class AgentController extends Agent {
         System.out.println("Controller start. Detected Model: " + currentModel);
 
         if (currentModel == 1) {
-            // MODEL 1: BACKTRACKING (Logic lama kita)
+            // MODEL 1: backtracking
             addBehaviour(new TokenPassingBehaviour());
         } else {
-            // MODEL 2-4: FIXED POINT ITERATION (Logic baru)
+            // MODEL 2-4: fixed point iteration
             addBehaviour(new FixedPointBehaviour());
         }
     }
@@ -55,7 +56,6 @@ public class AgentController extends Agent {
                     ACLMessage reply = myAgent.receive(mt);
                     
                     if (reply != null) {
-                        // Robot melapor berapa angka yang dia taruh
                         int moves = Integer.parseInt(reply.getContent());
                         totalMovesInRound += moves;
                         
@@ -67,7 +67,7 @@ public class AgentController extends Agent {
                         currentRobot++;
                         step = 0;
 
-                        // CEK APAKAH SUDAH SELESAI 1 PUTARAN (Robot 1-9 sudah jalan semua?)
+                        // CEK APAKAH UDAH SELESAI 1 PUTARAN 
                         if (currentRobot > 9) {
                             step = 2; // Evaluasi Akhir Ronde
                         }
@@ -80,10 +80,7 @@ public class AgentController extends Agent {
                     System.out.println("=== END OF ROUND " + roundNumber + " ===");
                     System.out.println("Total perubahan di papan: " + totalMovesInRound);
 
-                    // LOGIKA TERMINATION:
-                    // Jika dalam satu putaran penuh (Robot 1-9) TIDAK ADA yang menaruh angka (0 moves),
-                    // berarti kondisi "Fixed Point" tercapai. Papan tidak akan berubah lagi.
-                    
+                    // Kalau udah ga ada pergantian berarti stop
                     if (totalMovesInRound == 0) {
                         System.out.println("STOP. Tidak ada perubahan lagi (Converged).");
                         
@@ -93,16 +90,15 @@ public class AgentController extends Agent {
                              System.out.println("RESULT: STUCK / PARTIAL SOLUTION (Sifat Model 2-4)");
                         }
                         
-                        // Matikan semua agen
                         killAllAgents9(); 
                         myAgent.doDelete();
                     } else {
-                        // Jika masih ada perubahan, LANJUT ronde baru
+                        // Kalau masih ada perubahan, lanjut ronde baru
                         System.out.println("Masih ada progress. Lanjut Ronde " + (roundNumber + 1));
                         roundNumber++;
-                        currentRobot = 1;      // Reset ke Robot 1
-                        totalMovesInRound = 0; // Reset counter
-                        step = 0;              // Ulang loop
+                        currentRobot = 1;      
+                        totalMovesInRound = 0; 
+                        step = 0;              
                     }
                     break;
             }
@@ -113,10 +109,9 @@ public class AgentController extends Agent {
             return false;
         }
         
-        // Helper untuk matikan Robot1 - Robot9
         private void killAllAgents9() {
             ACLMessage bye = new ACLMessage(ACLMessage.REQUEST);
-            bye.setContent("SHUTDOWN"); // Pastikan agen punya handler shutdown
+            bye.setContent("SHUTDOWN"); // Pastikan agen dishutdown juga
             for(int i=1; i<=9; i++) {
                 bye.addReceiver(new AID("Robot"+i, AID.ISLOCALNAME));
             }

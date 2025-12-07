@@ -40,43 +40,24 @@ public class SudokuEnvironment {
         return model;
     }
     
-    // METHOD BARU: Get cell value
-    public synchronized int getCell(int row, int col) {
-        return board[row][col];
-    }
-    
-    // METHOD BARU: Check if history exists
     public synchronized boolean hasHistory() {
         return !historyStack.isEmpty();
     }
   
-
-    // UPDATED: Synchronized untuk thread-safety
     public synchronized boolean removeLastNumber() {
         if (historyStack.isEmpty()) {
             return false;
         }
         
-        // 1. Ambil data langkah terakhir
         int[] lastMove = historyStack.pop();
         int row = lastMove[0];
         int col = lastMove[1];
         int val = lastMove[2];
         
-        // 2. Kosongkan papan
         board[row][col] = 0;
         
-        // 3. SIMPAN KE MEMORI: 
-        // "Di koordinat ini, kita baru saja mencabut angka 'val'. 
-        // Jangan coba angka <= val lagi di putaran ini."
         String key = row + "," + col;
         backtrackMemory.put(key, val);
-
-        // 4. BERSIHKAN MEMORI MASA DEPAN
-        // Jika kita mundur dari kotak 5 ke kotak 4, maka memori "gagal" 
-        // di kotak 5 (dan 6, 7...) harus direset. Karena dengan angka baru di kotak 4,
-        // kotak 5 mungkin punya solusi baru mulai dari 1 lagi.
-        cleanForwardMemory(row, col);
 
         System.out.println("Env: [TAKE] Cabut " + val + " dari [" + row + "," + col + "]. Ingat next start > " + val);
         
@@ -88,13 +69,6 @@ public class SudokuEnvironment {
     
     }
     
-    private void cleanForwardMemory(int currentRow, int currentCol) {
-        // Implementasi sederhana: Karena pengisian sudoku biasanya urut (kiri ke kanan, atas ke bawah),
-        // Kita bisa menghapus key yang koordinatnya > current.
-        // Atau cara termudah untuk backtracking murni:
-        // Setiap kali Placer BERHASIL menaruh angka, dia harus mereset memori untuk sel tersebut.
-        // Lihat perubahan di method placeNumber nanti.
-    }
 
     // Method baru untuk Placer bertanya "Mulai dari angka berapa?"
     public synchronized int getStartValueFor(int row, int col) {
@@ -110,14 +84,6 @@ public class SudokuEnvironment {
         board[row][col] = num;
         historyStack.push(new int[]{row, col, num});
         
-        // KUNCI SUKSES: 
-        // Kalau berhasil taruh angka baru, HAPUS memori kegagalan di koordinat ini
-        // supaya kalau nanti di-backtrack lagi ke sini, dia ingat angka ini.
-        // TAPI lebih penting lagi: Hapus memori untuk koordinat SETELAHNYA (future cells).
-        // Karena logic backtracking: ubah masa lalu = masa depan jadi baru lagi.
-        // Untuk sederhananya, kita clear memori koordinat ini saat Taker mengambil, 
-        // tapi Placer menimpa history lama.
-        
         // Update GUI ...
         if (gui != null) {
             SwingUtilities.invokeLater(() -> gui.updateByAgent(row, col, num, isPlacing));
@@ -131,12 +97,9 @@ public class SudokuEnvironment {
             System.arraycopy(newBoard[i], 0, this.board[i], 0, 9);
         }
 
-        // Reset Logic
+        // Clear memory
         historyStack.clear();
         backtrackMemory.clear();
-
-        // Reset Model ke default (atau biarkan sesuai terakhir)
-        // this.activeModel = 1; 
     }
     
     public synchronized void resetMemoryAt(int row, int col) {
@@ -291,20 +254,6 @@ public class SudokuEnvironment {
             }
         }
         System.out.println("-------------------------");
-        
-        Iterator<int[]> it = historyStack.iterator();
-        while (it.hasNext()) {
-            int[] arr = it.next();
-            
-             for (int i = 0; i < arr.length ;i++) {
-//                 System.out.print(arr[i]+" ");
-             }
-//                 System.out.println();
-             
-        }
-//        System.out.println("History size: "+getHistorySize());
-        
-        
     }
     
     public void clearBoard() {
@@ -314,9 +263,5 @@ public class SudokuEnvironment {
             }
         }
         historyStack.clear();
-    }
-    
-    public int getHistorySize() {
-        return historyStack.size();
     }
 }
