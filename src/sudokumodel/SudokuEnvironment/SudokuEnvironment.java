@@ -116,8 +116,16 @@ public class SudokuEnvironment {
             return false;
         }
         
-        if (model >= 2) {
-             if (!checkSpecificRules(row, col, val)) {
+        if (model == 2) {
+             if (!checkSpecificRules1(row, col, val)) {
+                 return false;
+             }
+        } else if (model == 3) {
+             if (!checkSpecificRules2(row, col, val)) {
+                 return false;
+             }
+        } else if (model == 4) {
+             if (!checkSpecificRules3(row, col, val)) {
                  return false;
              }
         }
@@ -142,7 +150,7 @@ public class SudokuEnvironment {
         return true;
     }
     
-    private boolean checkSpecificRules(int row, int col, int val) {
+    private boolean checkSpecificRules1(int row, int col, int val) {
         int startRow = (row / 3) * 3;
         int startCol = (col / 3) * 3;
 
@@ -153,18 +161,9 @@ public class SudokuEnvironment {
             boolean conditionMet = false;
 
             // Syarat 1: Di baris 'r' (global) sudah ada angka 'val'?
-            if (rowHasNumber(r, val)) {
+            if (subBoardRowHasNumber(r, val)) {
                 conditionMet = true;
             }
-            // Syarat 2 (Model 2): Cell sejajar (r, col) tidak kosong?
-            else if (board[r][col] != 0) {
-                conditionMet = true;
-            }
-            // Syarat 3 (Model 3): Semua cell di baris 'r' DALAM sub-board penuh?
-            else if (model == 3 && isSubRowFull(r, startCol)) {
-                conditionMet = true;
-            }
-
             // Jika untuk salah satu baris tetangga, tidak ada syarat yang terpenuhi,
             // maka kita TIDAK BOLEH menaruh angka di sini.
             if (!conditionMet) return false;
@@ -177,18 +176,79 @@ public class SudokuEnvironment {
             boolean conditionMet = false;
 
             // Syarat 1: Di kolom 'c' (global) sudah ada angka 'val'?
-            if (colHasNumber(c, val)) {
-                conditionMet = true;
-            }
-            // Syarat 2 (Model 2): Cell sejajar (row, c) tidak kosong?
-            else if (board[row][c] != 0) {
-                conditionMet = true;
-            }
-            // Syarat 3 (Model 3): Semua cell di kolom 'c' DALAM sub-board penuh?
-            else if (model == 3 && isSubColFull(c, startRow)) {
+            if (subBoardColHasNumber(c, val)) {
                 conditionMet = true;
             }
 
+            if (!conditionMet) return false;
+        }
+
+        return true;
+    }
+    
+    private boolean checkSpecificRules2(int row, int col, int val) {
+        int startRow = (row / 3) * 3;
+        int startCol = (col / 3) * 3;
+
+        // Aturan A: Cek baris lain dalam sub-board yang sama
+        for (int r = startRow; r < startRow + 3; r++) {
+            if (r == row) continue; // Skip baris kita sendiri
+
+            boolean conditionMet = false;
+            
+            // Syarat 2 (Model 2): Cell sejajar (r, col) tidak kosong?
+            if (subBoardRowHasNumber(r, val) || board[r][col] != 0) {
+                conditionMet = true;
+            }
+            // Jika untuk salah satu baris tetangga, tidak ada syarat yang terpenuhi,
+            // maka kita TIDAK BOLEH menaruh angka di sini.
+            if (!conditionMet) return false;
+        }
+
+        // Aturan B: Cek kolom lain dalam sub-board yang sama
+        for (int c = startCol; c < startCol + 3; c++) {
+            if (c == col) continue; // Skip kolom kita sendiri
+
+            boolean conditionMet = false;
+
+            if (subBoardColHasNumber(c, val) || board[row][c] != 0) {
+                conditionMet = true;
+            }
+
+            if (!conditionMet) return false;
+        }
+
+        return true;
+    }
+    
+    private boolean checkSpecificRules3(int row, int col, int val) {
+        int startRow = (row / 3) * 3;
+        int startCol = (col / 3) * 3;
+
+        // Aturan A: Cek baris lain dalam sub-board yang sama
+        for (int r = startRow; r < startRow + 3; r++) {
+            if (r == row) continue; // Skip baris kita sendiri
+
+            boolean conditionMet = false;
+
+            if (subBoardRowHasNumber(r, val) || board[r][col] != 0 || isSubRowFull(r, startCol)) {
+                conditionMet = true;
+            }
+            // Jika untuk salah satu baris tetangga, tidak ada syarat yang terpenuhi,
+            // maka kita TIDAK BOLEH menaruh angka di sini.
+            if (!conditionMet) return false;
+        }
+
+        // Aturan B: Cek kolom lain dalam sub-board yang sama
+        for (int c = startCol; c < startCol + 3; c++) {
+            if (c == col) continue; // Skip kolom kita sendiri
+
+            boolean conditionMet = false;
+
+            if (subBoardColHasNumber(c, val) || board[row][c] != 0 || isSubColFull(c, startRow)) {
+                conditionMet = true;
+            }
+            
             if (!conditionMet) return false;
         }
 
@@ -204,15 +264,15 @@ public class SudokuEnvironment {
         return true;
     }
     
-    private boolean rowHasNumber(int r, int val) {
-        for (int c = 0; c < 9; c++) {
+    private boolean subBoardRowHasNumber(int r, int val) {
+        for (int c = 0; c < 3; c++) {
             if (board[r][c] == val) return true;
         }
         return false;
     }
 
-    private boolean colHasNumber(int c, int val) {
-        for (int r = 0; r < 9; r++) {
+    private boolean subBoardColHasNumber(int c, int val) {
+        for (int r = 0; r < 3; r++) {
             if (board[r][c] == val) return true;
         }
         return false;
